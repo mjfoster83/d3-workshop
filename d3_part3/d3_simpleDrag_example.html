@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>I'm Learning D3</title>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<style>
+body {
+  font: 12px sans-serif;
+}
+.dot {
+    fill:steelblue;
+}
+
+svg {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+}
+	</style>
+</head>
+<body>
+  <p style="position: absolute; margin-left: 6px; margin-top: 6px; text-size: 12px;">Click and Drag the Circles! The radius of them is determined by our data.</p>
+	<!-- Location for page elements. -->
+<script>
+// The Dataset in JSON format
+dataset = [
+  { x: 100, y: 100, value: 50, city: "Cambridge" },
+  { x: 175, y: 250, value: 80, city: "Boston" },
+  { x: 300, y: 100, value: 30, city: "Brookline" },
+  { x: 400, y: 200, value: 40, city: "Somerville" },
+  { x: 225, y: 125, value: 20, city: "Watertown" },
+  { x: 450, y: 100, value: 50, city: "Medford" }
+];
+
+// Define Drag Behavior
+var drag = d3.behavior.drag()
+  .origin(Object)
+  .on("drag", function(d) {
+    d.x = d3.event.x;
+    d.y = d3.event.y;
+    draw();
+  });
+
+// Create SVG Background
+var svg = d3.select("body")
+  .append("svg")
+  .attr("width", 720)
+  .attr("height", 400);
+
+// Create Draw Function
+function draw() {
+  var g = svg.selectAll("g")
+    .data(dataset);
+  
+  gEnter = g
+    .enter()
+    .append("g")
+    .call(drag);
+
+  g.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+  gEnter.append("circle")
+  	.attr("class", "dot")
+    .attr("height", 100)
+    .attr("width", 100)
+    .attr("r", function(d) { return d.value });
+}
+
+// Run Draw Function
+draw();
+
+</script>
+</html>

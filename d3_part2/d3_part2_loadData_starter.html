@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>I'm Learning D3</title>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<style>
+		text {
+			font-family: "Open Sans", sans-serif;
+			font-size: 12px;
+		}
+	</style>
+</head>
+<body>
+	<!-- Location for page elements. -->
+<script>
+
+	// Width and height of SVG
+	var width = 150;
+	var height = 175;
+
+	// Margins to left and bottom of chart
+	var margin = {left: 50, bottom: 75};
+	
+	// Create SVG element
+	var svg = d3.select("body")
+		.append("svg")
+		.attr("width", width)
+		.attr("height", height);
+
+	// Create Scale for Chart to dynamically scale by value
+	var y = d3.scale.linear().range([height - margin.bottom, 0]);
+
+	// Load External Data from CSV
+	d3.csv("data/rat-data.csv", type, function(error, data) {
+		y.domain([0, d3.max(data, function(d) { return d.rats; })]);
+
+		var barWidth = 20;
+
+		var bar = svg.selectAll("g")
+			.data(data)
+			.enter().append("g")
+			.attr("transform", function(d, i) { return "translate(" + i*25 + ",0)"; });
+
+		bar.append("rect")
+			.attr("x", function(d) { return margin.left })
+			.attr("y", function(d) { return y(d.rats); })
+			.attr("height", function(d) { return height - margin.bottom - y(d.rats); })
+			.attr("width", barWidth)
+			.attr( "fill", "steelblue");
+
+		bar.append("text")
+			.attr("x", function(d) { return margin.left + barWidth / 2 })
+			.attr("y", function(d) { return y(d.rats) + 4; })
+			.attr("dy", "1em")
+			.attr("fill", "white")
+			.style("text-anchor", "middle")
+			.text(function(d) { return d.rats; });
+	});
+
+	function type(d) {
+		d.rats = +d.rats; // coerce to number
+		return d;
+	}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<html>
+<head>
+    <title>A D3 map</title>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/_assets/data/boston_neighborhoods.json"></script>
+    <script src="/_assets/data/boston_rodents.json"></script>
+    <link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <style>
+        h1, h2 {
+            position: absolute;
+            left: 10px;
+            font-family: "Proxima Nova", Montserrat, sans-serif;
+            font-size: 1.3em;
+            font-weight: 100;
+        }
+        h2 {
+            top: 30px;
+            font-size: 1em;
+        }
+        .incident {
+            fill: steelblue;
+        }
+        .hover {
+            fill: yellow;   
+        }
+    </style>
+</head>
+<body>
+    <h1>Rodent Incidents in Boston</h1>
+    <h2></h2>
+    <script>
+    var width = 700;
+    var height = 580;
+
+    var svg = d3.select( "body" )
+        .append( "svg" )
+        .attr( "width", width )
+        .attr( "height", height );
+
+    var g = svg.append( "g" );
+
+    var albersProjection = d3.geo.albers()
+        .scale( 190000 )
+        .rotate( [71.057,0] )
+        .center( [0, 42.313] )
+        .translate( [width/2,height/2] );
+
+    var geoPath = d3.geo.path()
+        .projection( albersProjection );
+
+    g.selectAll( "path" )
+        .data( neighborhoods_json.features )
+        .enter()
+        .append( "path" )
+        .attr( "fill", "#ccc" )
+        .attr( "stroke", "#333")
+        .attr( "d", geoPath );
+
+    var rodents = svg.append( "g" );
+
+    rodents.selectAll( "path" )
+        .data( rodents_json.features )
+        .enter()
+        .append( "path" )
+        .attr( "fill", "#900" )
+        .attr( "stroke", "#999" )
+        .attr( "d", geoPath )
+        .attr("class","incident")
+        .on("mouseover", function(d){
+            d3.select("h2").text(d.properties.LOCATION_STREET_NAME);
+            d3.select(this).attr("class","incident hover");
+        })
+        .on("mouseout", function(d){
+            d3.select("h2").text("");
+            d3.select(this).attr("class","incident");
+        });
+    </script>
+</body>
+</html>

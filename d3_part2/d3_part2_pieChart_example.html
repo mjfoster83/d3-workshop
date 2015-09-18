@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  position: relative;
+  width: 600px;
+}
+
+text {
+  font: 10px sans-serif;
+}
+
+form {
+  position: absolute;
+  left: 400px;
+  bottom: 10px;
+  text-align: right;
+  font-size: 12px;
+}
+
+.my-legend .legend-title {
+  text-align: left;
+  margin-bottom: 8px;
+  font-weight: bold;
+  font-size: 90%;
+}
+.my-legend .legend-scale ul {
+  margin: 0;
+  padding: 0;
+  float: left;
+  list-style: none;
+}
+.my-legend .legend-scale ul li {
+  display: block;
+  float: left;
+  width: 50px;
+  margin-bottom: 6px;
+  text-align: center;
+  font-size: 80%;
+  list-style: none;
+}
+.my-legend ul.legend-labels li span {
+  display: block;
+  float: left;
+  height: 15px;
+  width: 50px;
+}
+.my-legend .legend-source {
+  font-size: 70%;
+  color: #999;
+  clear: both;
+}
+.my-legend a {
+  color: #777;
+}
+
+</style>
+<div class='my-legend'>
+<div class='legend-title'>Age Demographics of Boston, 1990-2010</div>
+<div class='legend-scale'>
+  <ul class='legend-labels'>
+    <li><span style='background:#F1EEF6;'></span>< 18</li>
+    <li><span style='background:#BDC9E1;'></span>18-34</li>
+    <li><span style='background:#74A9CF;'></span>35-65</li>
+    <li><span style='background:#2B8CBE;'></span>> 65</li>
+  </ul>
+</div>
+<div class='legend-source'>Source: <a href="http://www.socialexplorer.com">Social Explorer</a></div>
+</div>
+<form>
+  <label style="font-weight: bold;">Census Year</label><br>
+  <label><input type="radio" name="dataset" value="Cen_1990" checked> 1990</label>
+  <label><input type="radio" name="dataset" value="Cen_2000"> 2000</label>
+  <label><input type="radio" name="dataset" value="Cen_2010"> 2010</label>
+</form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script>
+
+var width = 600,
+    height = 500,
+    radius = Math.min(width, height) / 2;
+
+var color = d3.scale.category20c();
+
+var pie = d3.layout.pie()
+    .value(function(d) { return d.Cen_1990; })
+    .sort(null);
+
+var arc = d3.svg.arc()
+    .innerRadius(radius - 250)
+    .outerRadius(radius - 20);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+d3.csv("data/boston-data.csv", type, function(error, data) {
+  var path = svg.datum(data).selectAll("path")
+      .data(pie)
+    .enter().append("path")
+      .attr("fill", function(d, i) { return color(i); })
+      .attr("d", arc);
+
+  d3.selectAll("input")
+      .on("change", change);
+
+  var timeout = setTimeout(function() {
+    d3.select("input[value=\"Cen_2000\"]").property("checked", true).each(change);
+  }, 2000);
+
+  function change() {
+    var value = this.value;
+    clearTimeout(timeout);
+    pie.value(function(d) { return d[value]; }); // change the value function
+    path = path.data(pie); // compute the new angles
+    path.attr("d", arc); // redraw the arcs
+  }
+});
+
+// Function to force data type as number not string
+function type(d) {
+  d.Cen_1990 = +d.Cen_1990; // Change both of these to d.Cen_1990
+  d.Cen_2000 = +d.Cen_2000; // Change both of these values to d.Cen_2000
+  d.Cen_2010 = +d.Cen_2010;// Add another value here that sets d.Cen2010
+  return d;
+}
+
+</script>
