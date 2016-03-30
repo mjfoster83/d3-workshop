@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3 Demo: Making a scatterplot with SVG</title>
+		<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+		<style type="text/css">
+			/* No style rules here yet */		
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+
+			//Width and height
+			var w = 180;
+			var h = 180;
+			
+			var dataset = [
+							[40, 50], [90, 120], [30, 90], [60, 40], [10, 10]
+						  ];
+	
+			//Create SVG element
+			var svg = d3.select("body")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h)
+						.attr("style", "outline: thin solid black;");
+
+			svg.selectAll("circle")
+			   .data(dataset)
+			   .enter()
+			   .append("circle")
+			   .attr("cx", function(d) {
+			   		return d[0];
+			   })
+			   .attr("cy", function(d) {
+			   		return d[1];
+			   })
+			   .attr("r", 5);
+			
+		</script>
+	</body>
+</html>
