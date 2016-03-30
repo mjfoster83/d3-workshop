@@ -12,17 +12,17 @@ Suggested Prerequisite: [Codecademy JavaScript Tutorial](https://www.codecademy.
 
 ## Workshops
 
-1 - [Introducing D3: What are Data Driven Documents? (Make a Chart)](http://duspviz.mit.edu/d3-workshop/intro-to-d3/)
+1 - [Bar Charts: An Intro to D3](http://duspviz.mit.edu/d3-workshop/intro-to-d3/)
 
 An introduction to what D3 is, and what it isn't. This session will get you started, showing how to setup a document and development environment, work with selectors, create elements, and visualize a basic dataset.
 
-2 - [Loading Data and Stealing Code](http://duspviz.mit.edu/d3-workshop/loading-data-stealing-code/)
-
-There is no need to reinvent the wheel! Building on the previous session, we will continue our fundamentals by adding a larger dataset in CSV format, covering a few more fundamentals, then end with copying and modifying examples you find on the web.
-
-3 - [Engage the User! Interactions, Animations, and Transitions] (http://duspviz.mit.edu/d3-workshop/transitions-animation/)
+2 - [Scatterplots and More](http://duspviz.mit.edu/d3-workshop/scatterplots-and-more)
 
 This session will showcase events in your visualization and walk through some simple interactions, including click events, transitions, and basic data sorting.
+
+3 - [Transitions and Animations] (http://duspviz.mit.edu/d3-workshop/transitions-animation/)
+
+This session will showcase events in your visualization and walk through some simple interactions, including click events, transitions, and basic data sorting. In the process we will work through examples of transition visualizations from one dataset to another.
 
 4 - [Mapping Data with D3] (http://duspviz.mit.edu/d3-workshop/mapping-data-with-d3/)
 
