@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3 Demo: Making a scatterplot with SVG</title>
+		<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+		<style type="text/css">
+			#main {
+				margin-top: 10px;
+			}	
+		</style>
+	</head>
+	<body>
+		<button id="start">Transition</button>
+		<button id="reset">Reset</button>
+		<div id="main"></div>
+
+		<script type="text/javascript">
+
+			var ratData = [];
+			
+			d3.csv("/_assets/data/coffee_rodents_transform.csv", function(d) {
+				return {
+					city : d.city,
+					rats2015 : +d.rats_2015,
+					coffee2015 : +d.coffee_2015,
+					rats2016 : +d.rats_2016,
+					coffee2016 : + d.coffee_2016
+				};
+			}, function(error, rows) {
+				ratData = rows;
+				console.log(ratData);
+				createVisualization();
+			});
+
+			function createVisualization(){
+
+				//Width and height
+				var w = 180;
+				var h = 180;
+		
+				//Create SVG element
+				var svg = d3.select("#main")
+							.append("svg")
+							.attr("width", w)
+							.attr("height", h)
+							.attr("style", "outline: thin solid black;");
+
+				var circle = svg.selectAll("circle")
+				   .data(ratData)
+				   .enter()
+				   .append("circle")
+				   .attr("cx", function(d) {
+				   		return d.rats2015;
+				   })
+				   .attr("cy", function(d) {
+				   		return d.coffee2015;
+				   })
+				   .attr("r", 5);
+
+				d3.select("#start").on("click", function() {
+					circle
+						.transition()
+						.attr("cx", function(d) {
+							return d.rats2016;
+						})
+						.attr("cy", function(d) {
+							return d.coffee2016;
+						})
+				});
+
+				d3.select("#reset").on("click", function() {
+					circle
+						.transition()
+						.attr("cx", function(d) {
+							return d.rats2015;
+						})
+						.attr("cy", function(d) {
+							return d.coffee2015;
+						})
+				});
+
+			}
+			
+		</script>
+	</body>
+</html>
