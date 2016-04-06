@@ -16,7 +16,7 @@
 	// Our D3 code will go here.
 	var ratData = [];
 
-	d3.csv("/_assets/data/rat-data-larger.csv", function(d) {
+	d3.csv("/_assets/data/rat-data.csv", function(d) {
 		return {
 			city : d.city,
 			rats : +d.rats
@@ -38,6 +38,11 @@
 		var x_axisLength = 100; // length of x-axis in our layout
 		var y_axisLength = 100; // length of y-axis in our layout
 
+		// Use a scale for the height of the visualization
+		var yScale = d3.scale.linear()
+		    .domain([0, maxValue])
+		    .range([0, y_axisLength]);
+
 		//Create SVG element
 		var svg = d3.select("body")
 			.append("svg")
@@ -50,14 +55,14 @@
 			.enter()
 			.append("rect")
 			.attr( "x", function(d,i){
-				return i * (x_axisLength/arrayLength) + 30; // Set x coord of rect
+				return i * (x_axisLength/arrayLength) + 30; // Set x coordinate of rectangle to index of data value (i) *25
 			})
 			.attr( "y", function(d){
-				return h - d.rats * (y_axisLength/maxValue) - 75; // Set y coord for height
+				return h - yScale(d.rats) - 75; // Set y coordinate of rect using the y scale
 			})
 			.attr( "width", (x_axisLength/arrayLength) - 1) 
 			.attr( "height", function(d){
-				return d.rats * (y_axisLength/maxValue); // Set height of rectangle to data value
+				return yScale(d.rats); // Set height of using the scale
 			})
 			.attr( "fill", "steelblue")
 			.on("mouseover", function(d){return tooltip.style("visibility", "visible").text(d.city + ": " + d.rats);})
