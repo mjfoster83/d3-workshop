@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>I'm Learning D3</title>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<style>
+		button {
+			position: absolute;
+			margin-left: 6px;
+			margin-top: 6px;
+		}
+	</style>
+</head>
+<body>
+	<button id="start">Transition</button>
+	<button id="reset" style="margin-left: 82px">Reset</button>
+	<!-- Location for page elements. -->
+<script>
+	//Make an SVG Container
+	var svgContainer = d3.select("body").append("svg")
+		.attr("width", 400)
+		.attr("height", 200)
+		.style("border-color", "black")
+		.style("border-style", "solid")
+		.style("border-width", "1px");
+	 
+	// Draw the Rectangle
+	var rectangle = svgContainer.append("rect")
+		.attr("x", 50)
+		.attr("y", 50)
+		.attr("width", 50)
+		.attr("height", 50);
+
+	d3.select("#start").on("click", function() {
+		rectangle
+			.transition()
+			.attr("width", 100) // New Width
+			.attr("height", 100); // New Height
+	});
+
+	d3.select("#reset").on("click", function() {
+		rectangle
+			.transition()
+			.attr("width", 50)
+			.attr("height", 50);
+	});
+</script>
+</html>
